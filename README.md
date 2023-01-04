@@ -4,3 +4,4 @@
 
 * [Day 1](./src/day1/day1.lua)
 * [Day 2](./src/day2/day2.lua)
+* [Day 3](./src/day3/day3.lua)
