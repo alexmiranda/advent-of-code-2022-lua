@@ -1,0 +1,1 @@
+files["src/**/*_spec.lua"] = {ignore = {"113", "143"}}
