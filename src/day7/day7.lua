@@ -60,15 +60,15 @@ function day7.parse_terminal_output(output)
     return root
 end
 
-function day7.find_folders_under(node, size)
+local function find_folders(node, predicate)
+    local result = {}
     local queue = {}
     table.insert(queue, node)
-    local total_size = 0
     repeat
         node = table.remove(queue, 1)
         -- print(inspect(node))
-        if node:size() < size then
-            total_size = total_size + node:size()
+        if predicate(node) then
+            table.insert(result, node)
         end
         for _, child in pairs(node.children) do
             if child.children then
@@ -76,7 +76,38 @@ function day7.find_folders_under(node, size)
             end
         end
     until next(queue) == nil
+    return result
+end
+
+function day7.find_folders_under(node, size)
+    local folders = find_folders(node, function(f)
+        return f:size() < size
+    end)
+    local total_size = 0
+    for _, folder in ipairs(folders) do
+        total_size = total_size + folder:size()
+    end
     return total_size
+end
+
+function day7.unused_disk_space(node, available_disk_space)
+    while node.name ~= "/" do
+        node = node.parent
+    end
+    return available_disk_space - node:size()
+end
+
+function day7.free_up_space(node, available_disk_space, required_free_space)
+    local total_unused_space = day7.unused_disk_space(node, available_disk_space)
+    local space_to_free = required_free_space - total_unused_space
+    local folders = find_folders(node, function(f)
+        return f:size() >= space_to_free
+    end)
+    local smallest_folder = available_disk_space
+    for _, folder in ipairs(folders) do
+        smallest_folder = math.min(smallest_folder, folder:size())
+    end
+    return smallest_folder
 end
 
 return day7
