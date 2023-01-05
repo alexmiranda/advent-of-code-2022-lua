@@ -1,6 +1,7 @@
 local day5 = {}
 
--- local inspect = require("inspect")
+-- luacheck: ignore inspect
+local inspect = require("inspect")
 
 function day5.parse_input(input)
     local stacks = {}
@@ -8,8 +9,6 @@ function day5.parse_input(input)
     local parsing_instructions = false
 
     for line in input:gmatch("(.-)\n") do
-        -- print(line)
-
         if not line:match("%S") then
             -- end of the stacks, should parse the instructions lines next
             parsing_instructions = true
@@ -51,6 +50,24 @@ function day5.move_crates(stacks, instructions)
         for _ = 1, instruction.amount do
             local crate = from[#from]
             table.remove(from, #from)
+            table.insert(to, crate)
+        end
+    end
+    for _, stack in ipairs(stacks) do
+        answer = answer .. stack[#stack]
+    end
+    return answer
+end
+
+function day5.move_multiple_crates(stacks, instructions)
+    local answer = ""
+    for _, instruction in ipairs(instructions) do
+        local from = stacks[instruction.from]
+        local to = stacks[instruction.to]
+        local pos = #from - instruction.amount + 1
+        for _ = 1, instruction.amount do
+            local crate = from[pos]
+            table.remove(from, pos)
             table.insert(to, crate)
         end
     end
