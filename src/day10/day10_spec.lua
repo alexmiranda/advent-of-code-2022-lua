@@ -10,11 +10,40 @@ describe("day10", function()
         puzzle_input = assert(io.open("src/day10/input", "r")):read("*all")
     end)
 
-    it("example - part 1", function()
-        assert.are.equals(13140, day10.sum_signal_strengths(example))
+    it("example", function()
+        local signal_strength, screen = day10.sum_signal_strengths(example)
+        assert.are.equals(13140, signal_strength)
+        local expected_screen = [[
+##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######.....]]
+        assert.are.equals(expected_screen, screen)
     end)
 
-    it("puzzle input - part 1", function()
-        assert.are.equals(13820, day10.sum_signal_strengths(puzzle_input))
+    it("puzzle input", function()
+        local signal_strength, screen = day10.sum_signal_strengths(puzzle_input)
+        assert.are.equals(13820, signal_strength)
+        local expected_screen = [[
+####.#..#..##..###..#..#..##..###..#..#.
+...#.#.#..#..#.#..#.#.#..#..#.#..#.#.#..
+..#..##...#....#..#.##...#....#..#.##...
+.#...#.#..#.##.###..#.#..#.##.###..#.#..
+#....#.#..#..#.#.#..#.#..#..#.#.#..#.#..
+####.#..#..###.#..#.#..#..###.#..#.#..#.]]
+        assert.are.equals(expected_screen, screen)
+    end)
+
+    it("pixel positioning on a string", function()
+        local values = { 1, 39, 40, 42, 80, 81, 83, 121, 122, 124 }
+        for i, cycle in ipairs({ 1, 39, 40, 41, 79, 80, 81, 119, 120, 121 }) do
+            local row = math.floor((cycle - 1) / 40)
+            local col = cycle - (row * 40)
+            local pixel_position = row * 40 + row + col
+            -- print(cycle, row, col, pixel_position)
+            assert.are.equals(values[i], pixel_position)
+        end
     end)
 end)
