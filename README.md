@@ -13,3 +13,4 @@
 * [Day 9](./src/day9/day9.lua)
 * [Day 10](./src/day10/day10.lua)
 * [Day 11](./src/day11/day11.lua)
+* [Day 12](./src/day12/day12.lua)
